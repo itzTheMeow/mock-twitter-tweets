@@ -15,4 +15,5 @@
     profile_image_url:
       "https://pbs.twimg.com/profile_images/1250483398889611271/jTE6zCZe_normal.jpg",
   }}
+  content="Need me a #SvelteTweet hosted on github.com @Meow."
 />

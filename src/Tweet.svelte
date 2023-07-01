@@ -1,14 +1,47 @@
 <script lang="ts">
   import { TwitterLightTheme, themeString, type TwitterTheme } from "Theme";
+  import { escapeHTML } from "utils";
 
+  /** The tweet author. */
   export let author: { name: string; username: string; profile_image_url: string };
+  /** The content of the tweet. */
+  export let content: string;
   /** Theme to use for tweet rendering. Defaults to `TwitterLightTheme`. */
   export let theme: TwitterTheme = TwitterLightTheme;
   /** Additional style to apply to the container. */
   export let style = "";
 
+  const linkStyle = `style="color:var(--link);text-decoration:none"`;
+
   let author_url = "";
   $: author_url = `https://twitter.com/${author.username}`;
+
+  let formattedContent = "";
+  $: formattedContent = escapeHTML(content)
+    .replace(
+      /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/,
+      (match) =>
+        `<a ${linkStyle} href="${match}" target="_blank">${match.replace(
+          /^http(s?):\/\//i,
+          ""
+        )}</a>`
+    )
+    .replace(
+      /\B\@([\w\-]+)/gim,
+      (match) =>
+        `<a ${linkStyle} href="https://twitter.com/${match.replace(
+          "@",
+          ""
+        )}" target="_blank">${match}</a>`
+    )
+    .replace(
+      /(#+[a-zA-Z0-9(_)]{1,})/g,
+      (match) =>
+        `<a ${linkStyle} href="https://twitter.com/hashtag/${match.replace(
+          "#",
+          ""
+        )}" target="_blank">${match}</a>`
+    );
 </script>
 
 <div class="tweet-container" style={themeString(theme) + style}>
@@ -31,6 +64,9 @@
       </span>
     </a>
   </div>
+  <div class="tweet-content">
+    {@html formattedContent}
+  </div>
 </div>
 
 <style>
@@ -39,6 +75,7 @@
     color: var(--text);
     font-family: -apple-system, system-ui, BlinkMacSystemFont, Helvetica Neue, Helvetica, sans-serif;
   }
+
   .tweet-header {
     display: flex;
     align-items: center;
@@ -67,5 +104,13 @@
   }
   .tweet-header-author-username {
     color: var(--textMuted);
+  }
+
+  .tweet-content {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+    white-space: pre-wrap;
+    font-size: 1.125rem;
   }
 </style>
