@@ -37,6 +37,7 @@
   .tweet-container {
     background: var(--background);
     color: var(--text);
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, Helvetica Neue, Helvetica, sans-serif;
   }
   .tweet-header {
     display: flex;
@@ -48,11 +49,12 @@
     overflow: hidden;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
+    align-items: center;
   }
   .tweet-header-author {
     display: flex;
     flex-direction: column;
-    margin-left: 1rem;
+    margin-left: 0.25rem;
     text-decoration-line: none;
   }
   .tweet-header-author-name {
